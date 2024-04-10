@@ -4,14 +4,14 @@
     <data>
         <variable
             name="categoriesModel"
-            type="com.theme.Adminapp.CategoryModel" />
+            type="com.example.candlerushadmin.CategoryModel" />
         <variable
             name="position"
             type="Integer" />
         <variable
             name="clickListener"
-            type="com.theme.Adminapp.ClickInterface" />
-        <import type="com.theme.Adminapp.ClickType"/>
+            type="com.example.candlerushadmin.ClickInterface" />
+        <import type="com.example.candlerushadmin.ClickType"/>
     </data>
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"

@@ -1,4 +1,4 @@
-package com.theme.Adminapp
+package com.example.candlerushadmin
 
 data class SubCategoryModel(
     var subCatName: String? = "",

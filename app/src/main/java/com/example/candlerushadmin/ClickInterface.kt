@@ -1,9 +1,9 @@
-package com.theme.Adminapp
+package com.example.candlerushadmin
 
 import android.widget.ImageView
 
 interface ClickInterface {
-    fun onClick(position: Int, clickType: ClickType?= ClickType.Delete) :Boolean
+    fun onClick(position: Int, clickType: ClickType? = ClickType.Delete) :Boolean
     fun view(position: Int,imageView: ImageView)
 }
 

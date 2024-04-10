@@ -1,15 +1,15 @@
-package com.theme.Adminapp.adapters
+package com.example.candlerushadmin.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.theme.Adminapp.ClickInterface
-import com.theme.Adminapp.ClickType
-import com.theme.Adminapp.R
-import com.theme.Adminapp.databinding.LayoutMyOrdersBinding
-import com.theme.Adminapp.PlaceOrderModel
+import com.example.candlerushadmin.ClickInterface
+import com.example.candlerushadmin.ClickType
+import com.example.candlerushadmin.R
+import com.example.candlerushadmin.databinding.LayoutMyOrdersBinding
+import com.example.candlerushadmin.PlaceOrderModel
 
 class OrdersAdapter(var context: Context, var arrayList: ArrayList<PlaceOrderModel>, var clickListener: ClickInterface)  : RecyclerView.Adapter<OrdersAdapter.ViewHolder>(){
     class ViewHolder(var binding: LayoutMyOrdersBinding): RecyclerView.ViewHolder(binding.root) {

@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace 'com.theme.Adminapp'
+    namespace 'com.example.candlerushadmin'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.theme.Adminapp"
+        applicationId "com.example.candlerushadmin"
         minSdk 24
         targetSdk 33
         versionCode 1

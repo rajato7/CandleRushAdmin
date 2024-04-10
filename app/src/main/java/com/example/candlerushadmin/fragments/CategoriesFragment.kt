@@ -1,4 +1,4 @@
-package com.theme.Adminapp.fragments
+package com.example.candlerushadmin.fragments
 
 import android.Manifest
 import android.app.AlertDialog
@@ -15,47 +15,47 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.core.widget.doOnTextChanged
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
 import com.canhub.cropper.CropImageContract
 import com.canhub.cropper.CropImageContractOptions
 import com.canhub.cropper.CropImageOptions
-import com.theme.Adminapp.activities.MainActivity
-import com.theme.Adminapp.Constants
+import com.example.candlerushadmin.CategoryModel
+import com.example.candlerushadmin.activities.MainActivity
+import com.example.candlerushadmin.Constants
+import com.example.candlerushadmin.adapters.CategoriesAdapter
+import com.example.candlerushadmin.ClickInterface
+import com.example.candlerushadmin.ClickType
 
-import com.theme.Adminapp.adapters.SubCategoriesAdapter
-import com.theme.Adminapp.ClickInterface
-import com.theme.Adminapp.ClickType
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.QueryDocumentSnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
-import com.theme.Adminapp.R
-import com.theme.Adminapp.SubCategory
-import com.theme.Adminapp.databinding.AddSubCategoryDialogBinding
-import com.theme.Adminapp.databinding.FragmentSubcategoriesBinding
+import com.example.candlerushadmin.R
+import com.example.candlerushadmin.databinding.AddCategoryDialogBinding
+import com.example.candlerushadmin.databinding.FragmentCategoriesBinding
 import java.util.Calendar
 
 
-class SubCategoriesFragment : Fragment() {
-    lateinit var binding: FragmentSubcategoriesBinding
+class CategoriesFragment : Fragment() {
+    lateinit var binding: FragmentCategoriesBinding
     lateinit var mainActivity: MainActivity
 //    lateinit var layoutManager: RecyclerView.LayoutManager
-    lateinit var categoriesAdapter: SubCategoriesAdapter
-    var categoriesList= arrayListOf<SubCategory>()
+    lateinit var categoriesAdapter: CategoriesAdapter
+    var categoriesList= arrayListOf<CategoryModel>()
     val db = Firebase.firestore
 
     private var storageRef = FirebaseStorage.getInstance()
-    var collectionName = Constants.subCategories
+    var collectionName = Constants.categories
     var uriFilePath : String ?= null
     var uriContent : Uri?= null
     var downloadUri: Uri?=null
     var adapterPosition=-1
     var imgCandle: ImageView?=null
-    lateinit var dialogBinding : AddSubCategoryDialogBinding
-    var categoryId = ""
+    lateinit var dialogBinding : AddCategoryDialogBinding
 
     private var mediaPermission = if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.S)
         Manifest.permission.READ_EXTERNAL_STORAGE
@@ -106,17 +106,13 @@ class SubCategoriesFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mainActivity=activity as MainActivity
-        arguments?.let {
-            categoryId = it.getString(Constants.id,"") ?:""
-        }
-        Log.e("categoryId"," ${categoryId}")
-        db.collection(collectionName).whereEqualTo("categoryId",categoryId)
-            .addSnapshotListener{snapshots,e->
+        db.collection(collectionName).addSnapshotListener{snapshots,e->
             if (e != null){
                 return@addSnapshotListener
             }
             for (snapshot in snapshots!!.documentChanges) {
-                val userModel = convertObject(snapshot.document)
+                val userModel = convertObject( snapshot.document)
+
                 when (snapshot.type) {
                     DocumentChange.Type.ADDED -> {
                         userModel?.let { categoriesList.add(it) }
@@ -148,19 +144,22 @@ class SubCategoriesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        binding= FragmentSubcategoriesBinding.inflate(layoutInflater)
+        binding= FragmentCategoriesBinding.inflate(layoutInflater)
         // Inflate the layout for this fragment
         return(binding.root)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        categoriesAdapter= SubCategoriesAdapter(requireContext(),categoriesList, object :
+        categoriesAdapter= CategoriesAdapter(requireContext(),categoriesList,object :
             ClickInterface {
             override fun onClick(position: Int, clickType: ClickType?): Boolean {
                 when (clickType) {
+                    ClickType.AddSub->{
+                        mainActivity.navController.navigate(R.id.subCategoriesFragment, bundleOf(Constants.id to categoriesList[position].categoryId ))
+                    }
                     ClickType.OnViewClick->{
-                        showAddCategoryDialog(position)
+//                        mainActivity.navController.navigate(R.id.subcategoriesFragment)
                     }
                     ClickType.Delete -> {
                         AlertDialog.Builder(requireContext()).apply {
@@ -174,6 +173,11 @@ class SubCategoriesFragment : Fragment() {
                             show()
                         }
                     }
+
+                    ClickType.img->{
+                        showAddCategoryDialog(position)
+
+                    }
                     else -> {}
                 }
                 return true
@@ -184,7 +188,7 @@ class SubCategoriesFragment : Fragment() {
                 imageView?.let { it1 ->
                     Glide
                         .with(requireContext())
-                        .load(Uri.parse(categoriesList[position].subCatImage))
+                        .load(Uri.parse(categoriesList[position].categoryImgUri))
                         .centerCrop()
                         .placeholder(R.drawable.candle)
                         .into(it1)
@@ -194,10 +198,8 @@ class SubCategoriesFragment : Fragment() {
 
         })
 //        layoutManager = LinearLayoutManager(requireContext())
-        binding.recyclerCategory.layoutManager = LinearLayoutManager(mainActivity)
+        binding.recyclerCategory.layoutManager = GridLayoutManager(context,2)
         binding.recyclerCategory.adapter = categoriesAdapter
-
-
         binding.fabAdd.setOnClickListener {
             showAddCategoryDialog()
         }
@@ -206,7 +208,7 @@ class SubCategoriesFragment : Fragment() {
 
     fun showAddCategoryDialog(position: Int =-1) {
 
-        dialogBinding = AddSubCategoryDialogBinding.inflate(layoutInflater)
+        dialogBinding = AddCategoryDialogBinding.inflate(layoutInflater)
         var dialog = Dialog(requireContext()).apply {
             setContentView(dialogBinding.root)
             if(position>-1){
@@ -220,6 +222,7 @@ class SubCategoriesFragment : Fragment() {
             )
             show()
         }
+
         dialogBinding.imgAddCandle.setOnClickListener {
             checkPermissions()
         }
@@ -233,37 +236,16 @@ class SubCategoriesFragment : Fragment() {
                 dialogBinding.tilitemName.error = "Enter Category"
             }
         }
-        dialogBinding.edtdescription.doOnTextChanged { text, _, _, _ ->
-            var textLength = text?.length ?: 0
-            if (textLength > 0) {
-                dialogBinding.tilitemDescription.isErrorEnabled = false
-            } else {
-                dialogBinding.tilitemDescription.isErrorEnabled = true
-                dialogBinding.tilitemDescription.error = "Enter Description"
-            }
-        }
-        dialogBinding.edtPrice.doOnTextChanged { text, _, _, _ ->
-            var textLength = text?.length ?: 0
-            if (textLength > 0) {
-                dialogBinding.tilitemPrice.isErrorEnabled = false
-            } else {
-                dialogBinding.tilitemPrice.isErrorEnabled = true
-                dialogBinding.tilitemPrice.error = "Enter Price"
-            }
-        }
         dialogBinding.position=position
         if (position > -1) {
-            dialogBinding.subCategoriesModel = categoriesList[position]
+            dialogBinding.categoriesModel = categoriesList[position]
         } else {
-            dialogBinding.subCategoriesModel = SubCategory()
+            dialogBinding.categoriesModel = CategoryModel()
         }
         if(position >-1){
-            dialogBinding.edtitems.setText(categoriesList[position].subCatName)
-            dialogBinding.edtdescription.setText(categoriesList[position].subcatDescription)
-            dialogBinding.edtPrice.setText(categoriesList[position].subcatPrice.toString())
             Glide
                 .with(this)
-                .load(categoriesList[position].subCatImage)
+                .load(categoriesList[position].categoryImgUri)
                 .centerCrop()
                 .placeholder(R.drawable.candle)
                 .into(dialogBinding.imgAddCandle)
@@ -284,14 +266,6 @@ class SubCategoriesFragment : Fragment() {
                 dialogBinding.tilitemName.isErrorEnabled = true
                 dialogBinding.tilitemName.error = "Enter Name"
             }
-            else if (dialogBinding.edtdescription.text.toString().isNullOrEmpty()) {
-                dialogBinding.tilitemDescription.isErrorEnabled = true
-                dialogBinding.tilitemDescription.error = "Enter Description"
-            }
-            else if (dialogBinding.edtPrice.text.toString().isNullOrEmpty()) {
-                dialogBinding.tilitemPrice.isErrorEnabled = true
-                dialogBinding.tilitemPrice.error = "Enter Price"
-            }
             else if(uriContent != null) {
                 val ref = storageRef.reference.child(Calendar.getInstance().timeInMillis.toString())
                 var uploadTask = uriContent?.let { it1 -> ref.putFile(it1) }
@@ -306,7 +280,7 @@ class SubCategoriesFragment : Fragment() {
                     ref.downloadUrl
                 }?.addOnCompleteListener { task ->
                     System.out.println("in on complete listener")
-                    if (task.isSuccessful) {
+                    if (task.isSuccessful){
                         downloadUri = task.result
                         System.out.println("in on complete listener ${downloadUri.toString()}")
                         System.out.println("position $position")
@@ -315,38 +289,38 @@ class SubCategoriesFragment : Fragment() {
                             imgCandle?.let { it1 ->
                                 Glide
                                     .with(this)
-                                    .load(categoriesList[position].subCatImage)
+                                    .load(categoriesList[position].categoryImgUri)
                                     .centerCrop()
                                     .placeholder(R.drawable.candle)
                                     .into(it1)
                             }
                         }
+//                        imgCandle?.setImageURI(downloadUri)
+
                     }
                 }
             }else{
                 updateData(position, downloadUri.toString(), dialog)
             }
 
+
+
         }
     }
 
     fun updateData(position:Int = -1, imageUrl: String = "", dialog: Dialog){
 
-        var categoriesModel =  SubCategory(
-           subCatName =  dialogBinding.edtitems.text.toString(),
-            subcatDescription = dialogBinding.edtdescription.text.toString(),
-            subCatImage = imageUrl,
-            categoryId = categoryId,
-            subcatPrice = dialogBinding.edtPrice.text.toString().toInt()
+        var categoriesModel =  CategoryModel(
+            dialogBinding.edtitems.text.toString(),
+            imageUrl,
         )
         dialog.dismiss()
 
         if (position > -1) {
             db.collection(collectionName).document(categoriesList[position].categoryId ?: "").set(
-                SubCategory(
-                    subCatName =  dialogBinding.edtitems.text.toString(),
-                    subcatDescription = dialogBinding.edtdescription.text.toString(),
-                    subCatImage  = downloadUri.toString(),
+                CategoryModel(
+                    categoryName =  dialogBinding.edtitems.text.toString(),
+                    categoryImgUri  = downloadUri.toString(),
                     categoryId =categoriesList[position].categoryId ?: ""
                 )
             )
@@ -368,14 +342,14 @@ class SubCategoriesFragment : Fragment() {
     }
 
 
-    fun convertObject(snapshot: QueryDocumentSnapshot) : SubCategory?{
-        val categoriesModel: SubCategory? =
-            snapshot.toObject(SubCategory::class.java)
+    fun convertObject(snapshot: QueryDocumentSnapshot) : CategoryModel?{
+        val categoriesModel: CategoryModel? =
+            snapshot.toObject(CategoryModel::class.java)
         categoriesModel?.categoryId = snapshot.id ?: ""
         return categoriesModel
     }
 
-    fun getIndex(categoriesModel: SubCategory) : Int{
+    fun getIndex(categoriesModel: CategoryModel) : Int{
         var index = -1
         index = categoriesList.indexOfFirst { element ->
             element.categoryId?.equals(categoriesModel.categoryId) == true

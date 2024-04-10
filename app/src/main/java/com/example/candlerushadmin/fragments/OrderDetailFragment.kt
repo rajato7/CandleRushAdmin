@@ -1,4 +1,4 @@
-package com.theme.Adminapp.fragments
+package com.example.candlerushadmin.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,13 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
-import com.theme.Adminapp.Constants
-import com.theme.Adminapp.PlaceOrderModel
-import com.theme.Adminapp.RegisterModel
+import com.example.candlerushadmin.Constants
+import com.example.candlerushadmin.PlaceOrderModel
+import com.example.candlerushadmin.RegisterModel
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.theme.Adminapp.R
-import com.theme.Adminapp.databinding.FragmentOrderDetailBinding
+import com.example.candlerushadmin.R
+import com.example.candlerushadmin.databinding.FragmentOrderDetailBinding
 
 /**
  * A simple [Fragment] subclass.

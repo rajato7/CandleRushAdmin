@@ -1,4 +1,4 @@
-package com.theme.Adminapp.activities
+package com.example.candlerushadmin.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -7,8 +7,8 @@ import android.view.MenuItem
 import android.widget.ImageView
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
-import com.theme.Adminapp.R
-import com.theme.Adminapp.databinding.ActivityMainBinding
+import com.example.candlerushadmin.R
+import com.example.candlerushadmin.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding

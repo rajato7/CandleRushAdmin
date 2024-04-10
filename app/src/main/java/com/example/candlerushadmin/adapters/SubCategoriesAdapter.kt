@@ -1,4 +1,4 @@
-package com.theme.Adminapp.adapters
+package com.example.candlerushadmin.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -6,18 +6,22 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.theme.Adminapp.ClickInterface
-import com.theme.Adminapp.ClickType
-import com.theme.Adminapp.R
-import com.theme.Adminapp.databinding.CategoryListItemBinding
-import com.theme.Adminapp.CategoryModel
+
+import com.example.candlerushadmin.ClickInterface
+import com.example.candlerushadmin.ClickType
+import com.example.candlerushadmin.R
 
 
-class CategoriesAdapter(var context: Context, var arrayList: ArrayList<CategoryModel>, var clicklistener: ClickInterface):RecyclerView.Adapter<CategoriesAdapter.ViewHolder>() {
+import com.example.candlerushadmin.SubCategoryModel
+import com.example.candlerushadmin.databinding.SubCategoryListItemBinding
 
-    class ViewHolder(var binding: CategoryListItemBinding):RecyclerView.ViewHolder(binding.root) {
+class SubCategoriesAdapter(var context: Context, var arrayList: ArrayList<SubCategoryModel>, var clicklistener: ClickInterface
+//,var imgset:imageSetting
+):RecyclerView.Adapter<SubCategoriesAdapter.ViewHolder>() {
 
-        fun bindData(categoriesModel: CategoryModel, position: Int, clicklistener: ClickInterface, imageView: ImageView){
+    class ViewHolder(var binding: SubCategoryListItemBinding):RecyclerView.ViewHolder(binding.root) {
+
+        fun bindData(categoriesModel: SubCategoryModel, position: Int, clicklistener: ClickInterface, imageView: ImageView){
             binding.categoriesModel=categoriesModel
             binding.position=position
             binding.clickListener=clicklistener
@@ -36,7 +40,7 @@ class CategoriesAdapter(var context: Context, var arrayList: ArrayList<CategoryM
         parent: ViewGroup,
         viewType: Int
     ): ViewHolder {
-        val binding=CategoryListItemBinding.inflate(LayoutInflater.from(parent.context),parent,false)
+        val binding=SubCategoryListItemBinding.inflate(LayoutInflater.from(parent.context),parent,false)
         return ViewHolder(binding)
     }
 
@@ -44,15 +48,13 @@ class CategoriesAdapter(var context: Context, var arrayList: ArrayList<CategoryM
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.apply {
-            binding.tvcategory.setText(arrayList[position].categoryName)
-
+            binding.tvcategory.setText(arrayList[position].subCatName)
             Glide
                 .with(context)
-                .load(arrayList[position].categoryImgUri)
+                .load(arrayList[position].subCatImage)
                 .centerCrop()
                 .placeholder(R.drawable.candle)
                 .into(binding.imgCandle)
-
 //            binding.imgCandle.setImageURI(Uri.parse(arrayList[position].categoryImgUri))
             bindData(arrayList[position],position,clicklistener,binding.imgCandle)
 //            imgset.setImage(position,binding.imgCandle)

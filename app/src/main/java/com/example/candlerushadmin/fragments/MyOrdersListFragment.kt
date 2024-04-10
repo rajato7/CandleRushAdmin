@@ -1,4 +1,4 @@
-package com.theme.Adminapp.fragments
+package com.example.candlerushadmin.fragments
 
 import android.net.Uri
 import android.os.Bundle
@@ -11,18 +11,18 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.theme.Adminapp.activities.MainActivity
-import com.theme.Adminapp.Constants
-import com.theme.Adminapp.adapters.OrdersAdapter
-import com.theme.Adminapp.ClickInterface
-import com.theme.Adminapp.ClickType
-import com.theme.Adminapp.PlaceOrderModel
+import com.example.candlerushadmin.activities.MainActivity
+import com.example.candlerushadmin.Constants
+import com.example.candlerushadmin.adapters.OrdersAdapter
+import com.example.candlerushadmin.ClickInterface
+import com.example.candlerushadmin.ClickType
+import com.example.candlerushadmin.PlaceOrderModel
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.QueryDocumentSnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.theme.Adminapp.R
-import com.theme.Adminapp.databinding.FragmentMyOrdersListBinding
+import com.example.candlerushadmin.R
+import com.example.candlerushadmin.databinding.FragmentMyOrdersListBinding
 
 
 class MyOrdersListFragment : Fragment() {

@@ -1,4 +1,4 @@
-package com.theme.Adminapp.activities
+package com.example.candlerushadmin.activities
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -9,7 +9,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.theme.Adminapp.databinding.ActivityAdminLoginBinding
+import com.example.candlerushadmin.databinding.ActivityAdminLoginBinding
 
 class AdminLoginActivity : AppCompatActivity() {
 

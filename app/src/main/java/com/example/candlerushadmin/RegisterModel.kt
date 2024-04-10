@@ -1,4 +1,4 @@
-package com.theme.Adminapp
+package com.example.candlerushadmin
 
 data class RegisterModel (
     var userId:String?="",

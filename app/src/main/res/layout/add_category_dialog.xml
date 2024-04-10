@@ -4,12 +4,12 @@
     <data>
         <variable
             name="categoriesModel"
-            type="com.theme.Adminapp.CategoriesModel" />
+            type="com.example.candlerushadmin.CategoryModel" />
         <import type="android.view.View"/>
-        <import type="com.theme.Adminapp.ClickType"/>
+        <import type="com.example.candlerushadmin.ClickType"/>
         <variable
             name="click"
-            type="com.theme.Adminapp.ClickInterface" />
+            type="com.example.candlerushadmin.ClickInterface" />
         <variable
             name="position"
             type="Integer" />

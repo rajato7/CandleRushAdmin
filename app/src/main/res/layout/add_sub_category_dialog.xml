@@ -4,12 +4,12 @@
     <data>
         <variable
             name="subCategoriesModel"
-            type="com.theme.Adminapp.SubCategory" />
+            type="com.example.candlerushadmin.SubCategoryModel" />
         <import type="android.view.View"/>
-        <import type="com.theme.Adminapp.ClickType"/>
+        <import type="com.example.candlerushadmin.ClickType"/>
         <variable
             name="click"
-            type="com.theme.Adminapp.ClickInterface" />
+            type="com.example.candlerushadmin.ClickInterface" />
         <variable
             name="position"
             type="Integer" />
